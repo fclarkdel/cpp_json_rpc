@@ -1,8 +1,8 @@
-#include <CppJsonRpc/Request.hpp>
+#include <cpp_json_rpc/request.hpp>
 
-namespace CppJsonRpc
+namespace cpp_json_rpc
 {
-Request::Request(
+request::request(
 	Method method,
 	Params params,
 	Id id):
@@ -12,7 +12,7 @@ Request::Request(
 	id(std::move(id))
 {
 }
-Request::Request(Request&& move) noexcept:
+request::request(request&& move) noexcept:
 	jsonrpc("2.0"),
 	method(std::move(move.method)),
 	params(std::move(move.params)),
@@ -21,8 +21,8 @@ Request::Request(Request&& move) noexcept:
 	move.params = std::nullopt;
 	move.id = std::monostate();
 }
-Request&
-Request::operator=(const Request& rhs)
+request&
+request::operator=(const request& rhs)
 {
 	method = rhs.method;
 	params = rhs.params;
@@ -30,8 +30,8 @@ Request::operator=(const Request& rhs)
 
 	return *this;
 }
-Request&
-Request::operator=(Request&& rhs) noexcept
+request&
+request::operator=(request&& rhs) noexcept
 {
 	method = std::move(rhs.method);
 	params = std::move(rhs.params);
@@ -43,7 +43,7 @@ Request::operator=(Request&& rhs) noexcept
 	return *this;
 }
 bool
-Request::operator==(const Request& rhs) const
+request::operator==(const request& rhs) const
 {
 	return jsonrpc == rhs.jsonrpc &&
 		   method == rhs.method &&

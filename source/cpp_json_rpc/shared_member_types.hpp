@@ -5,7 +5,7 @@
 #include <string>
 #include <variant>
 
-namespace CppJsonRpc
+namespace cpp_json_rpc
 {
 using Id = std::variant<std::monostate, int, double, std::string>;
 using Jsonrpc = std::string;

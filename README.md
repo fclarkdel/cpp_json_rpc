@@ -1,4 +1,4 @@
-# CppJsonRpc
+# cpp_json_rpc
 
 ## Structure
 > The layout of this project

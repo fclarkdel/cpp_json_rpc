@@ -1,34 +1,34 @@
-#include <CppJsonRpc/Proxy.hpp>
+#include <cpp_json_rpc/proxy.hpp>
 
-namespace CppJsonRpc
+namespace cpp_json_rpc
 {
-Proxy::Proxy(std::string url):
+proxy::proxy(std::string url):
 	url(std::move(url)),
 	base_request(curl_easy_init())
 {
 }
-Proxy::Proxy(std::string url, CURL* base_request):
+proxy::proxy(std::string url, CURL* base_request):
 	url(std::move(url)),
 	base_request(curl_easy_duphandle(base_request))
 {
 }
-Proxy::Proxy():
+proxy::proxy():
 	base_request(curl_easy_init())
 {
 }
-Proxy::Proxy(const Proxy& copy):
+proxy::proxy(const proxy& copy):
 	url(copy.url),
 	base_request(curl_easy_duphandle(copy.base_request))
 {
 }
-Proxy::Proxy(Proxy&& move) noexcept:
+proxy::proxy(proxy&& move) noexcept:
 	url(std::move(move.url)),
 	base_request(move.base_request)
 {
 	move.base_request = curl_easy_init();
 }
-Proxy&
-Proxy::operator=(const Proxy& copy)
+proxy&
+proxy::operator=(const proxy& copy)
 {
 	if(this == &copy)
 		return *this;
@@ -38,8 +38,8 @@ Proxy::operator=(const Proxy& copy)
 
 	return *this;
 }
-Proxy&
-Proxy::operator=(Proxy&& move) noexcept
+proxy&
+proxy::operator=(proxy&& move) noexcept
 {
 	if(this == &move)
 		return *this;
@@ -52,27 +52,26 @@ Proxy::operator=(Proxy&& move) noexcept
 	return *this;
 }
 bool
-Proxy::operator==(const Proxy& rhs) const
+proxy::operator==(const proxy& rhs) const
 {
 	return url == rhs.url;
 }
 void
-Proxy::send_notification(const Notification& notification)
+proxy::send_notification(const notification& notification)
 {
 	message_queue.push(notification);
 }
-std::future<Response>
-Proxy::send_request(const Request& request)
+std::future<response>
+proxy::send_request(const request& request)
 {
-	std::future<Response> future_response;
+	std::future<response> future_response;
 
 	message_queue.push(request);
 
 	return future_response;
 }
 void
-Proxy::process_queue()
+proxy::process_queue()
 {
-	
 }
 }

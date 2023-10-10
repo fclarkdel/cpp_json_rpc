@@ -4,31 +4,31 @@
 #include <optional>
 #include <string>
 
-namespace CppJsonRpc
+namespace cpp_json_rpc
 {
-struct Error
+struct error
 {
 	int code;
 	std::string message;
 	std::optional<std::string> data;
 
-	explicit Error(
+	explicit error(
 		int code = 0,
 		std::string message = std::string(),
 		std::optional<std::string> data = std::nullopt);
 
-	Error(const Error& copy) = default;
+	error(const error& copy) = default;
 
-	Error(Error&& move) noexcept;
+	error(error&& move) noexcept;
 
-	Error&
-	operator=(const Error& copy) = default;
+	error&
+	operator=(const error& copy) = default;
 
-	Error&
-	operator=(Error&& move) noexcept;
+	error&
+	operator=(error&& move) noexcept;
 
 	bool
-	operator==(const Error& rhs) const;
+	operator==(const error& rhs) const;
 };
 }
 #endif

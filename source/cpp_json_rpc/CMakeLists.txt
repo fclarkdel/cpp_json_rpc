@@ -1,22 +1,22 @@
 add_library(
     CppJsonRpc_Library
-    ConcurrentQueue.hpp
-    Error.cpp
-    Error.hpp
-    Notification.hpp
-    Notification.cpp
-    Proxy.hpp
-    Proxy.cpp
-    Response.hpp
-    Response.cpp
-    Request.hpp
-    Request.cpp
-    SharedMemberTypes.hpp
+    concurrent_queue.hpp
+    error.cpp
+    error.hpp
+    notification.hpp
+    notification.cpp
+    proxy.hpp
+    proxy.cpp
+    response.hpp
+    response.cpp
+    request.hpp
+    request.cpp
+    shared_member_types.hpp
 )
 target_include_directories(
     CppJsonRpc_Library
     PUBLIC
-    ../../Source
+    ..
 )
 include(FetchContent)
 
@@ -36,12 +36,12 @@ target_link_libraries(
 if(PROJECT_IS_TOP_LEVEL)
     add_executable(
         CppJsonRpc_Tests
-        ConcurrentQueue.test.cpp
-        Error.test.cpp
-        Notification.test.cpp
-        Proxy.test.cpp
-        Request.test.cpp
-        Response.test.cpp
+        concurrent_queue.test.cpp
+        error.test.cpp
+        notification.test.cpp
+        proxy.test.cpp
+        request.test.cpp
+        response.test.cpp
     )
     FetchContent_Declare(
         googletest

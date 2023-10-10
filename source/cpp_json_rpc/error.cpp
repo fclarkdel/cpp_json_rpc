@@ -1,8 +1,8 @@
-#include <CppJsonRpc/Error.hpp>
+#include <cpp_json_rpc/error.hpp>
 
-namespace CppJsonRpc
+namespace cpp_json_rpc
 {
-Error::Error(
+error::error(
 	int code,
 	std::string message,
 	std::optional<std::string> data):
@@ -11,7 +11,7 @@ Error::Error(
 	data(std::move(data))
 {
 }
-Error::Error(Error&& move) noexcept:
+error::error(error&& move) noexcept:
 	code(move.code),
 	message(std::move(move.message)),
 	data(std::move(move.data))
@@ -19,8 +19,8 @@ Error::Error(Error&& move) noexcept:
 	move.code = 0;
 	move.data = std::nullopt;
 }
-Error&
-Error::operator=(Error&& move) noexcept
+error&
+error::operator=(error&& move) noexcept
 {
 	code = move.code;
 	move.code = 0;
@@ -33,7 +33,7 @@ Error::operator=(Error&& move) noexcept
 	return *this;
 }
 bool
-Error::operator==(const Error& rhs) const
+error::operator==(const error& rhs) const
 {
 	return code == rhs.code &&
 		   message == rhs.message &&

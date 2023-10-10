@@ -1,19 +1,19 @@
 #include <gtest/gtest.h>
 
-#include <CppJsonRpc/ConcurrentQueue.hpp>
+#include <cpp_json_rpc/concurrent_queue.hpp>
 
-using namespace CppJsonRpc;
+using namespace cpp_json_rpc;
 
-TEST(ConcurrentQueue, constructor)
+TEST(concurrent_queue, constructor)
 {
-	ConcurrentQueue<int> concurrent_queue;
+	concurrent_queue<int> concurrent_queue;
 
 	EXPECT_EQ(concurrent_queue.size(), 0);
 	EXPECT_EQ(concurrent_queue.pop(), std::nullopt);
 }
-TEST(ConcurrentQueue, should_push_and_pop_and_size)
+TEST(concurrent_queue, should_push_and_pop_and_size)
 {
-	ConcurrentQueue<int> concurrent_queue;
+	concurrent_queue<int> concurrent_queue;
 
 	EXPECT_EQ(concurrent_queue.size(), 0);
 	EXPECT_EQ(concurrent_queue.pop(), std::nullopt);

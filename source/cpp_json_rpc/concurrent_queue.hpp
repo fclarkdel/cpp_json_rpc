@@ -1,14 +1,14 @@
-#ifndef CPPJSONRPC_CONCURRENTQUEUE_HPP
-#define CPPJSONRPC_CONCURRENTQUEUE_HPP
+#ifndef CPPJSONRPC_CONCURRENT_QUEUE_HPP
+#define CPPJSONRPC_CONCURRENT_QUEUE_HPP
 
 #include <mutex>
 #include <optional>
 #include <queue>
 
-namespace CppJsonRpc
+namespace cpp_json_rpc
 {
 template<typename Type>
-struct ConcurrentQueue
+struct concurrent_queue
 {
 	void
 	push(Type value)
