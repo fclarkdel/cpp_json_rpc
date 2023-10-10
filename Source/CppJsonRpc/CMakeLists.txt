@@ -1,0 +1,59 @@
+add_library(
+    CppJsonRpc_Library
+    ConcurrentQueue.hpp
+    Error.cpp
+    Error.hpp
+    Notification.hpp
+    Notification.cpp
+    Proxy.hpp
+    Proxy.cpp
+    Response.hpp
+    Response.cpp
+    Request.hpp
+    Request.cpp
+    SharedMemberTypes.hpp
+)
+target_include_directories(
+    CppJsonRpc_Library
+    PUBLIC
+    ../../Source
+)
+include(FetchContent)
+
+FetchContent_Declare(
+    fluent_curl
+    GIT_REPOSITORY https://github.com/fclarkdel/fluent_curl.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(
+    fluent_curl
+)
+target_link_libraries(
+    CppJsonRpc_Library
+    PUBLIC
+    fluent_curl
+)
+if(PROJECT_IS_TOP_LEVEL)
+    add_executable(
+        CppJsonRpc_Tests
+        ConcurrentQueue.test.cpp
+        Error.test.cpp
+        Notification.test.cpp
+        Proxy.test.cpp
+        Request.test.cpp
+        Response.test.cpp
+    )
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.13.0.zip
+    )
+    FetchContent_MakeAvailable(googletest)
+
+    target_link_libraries(
+        CppJsonRpc_Tests
+        PRIVATE
+        CppJsonRpc_Library
+        gmock_main
+    )
+    enable_testing()
+endif()
