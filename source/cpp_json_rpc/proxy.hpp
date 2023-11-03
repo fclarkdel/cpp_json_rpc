@@ -5,7 +5,7 @@
 #include <variant>
 #include <vector>
 
-#include <curl/curl.h>
+#include <fluent_curl/session.hpp>
 
 #include <cpp_json_rpc/concurrent_queue.hpp>
 #include <cpp_json_rpc/notification.hpp>
@@ -17,17 +17,14 @@ namespace cpp_json_rpc
 struct proxy
 {
 	std::string url;
-	CURL* base_request;
 
-	explicit proxy(std::string url);
-
-	proxy(std::string url, CURL* base_request);
-
-	proxy();
+	explicit proxy(std::string url = "");
 
 	proxy(const proxy& copy);
 
 	proxy(proxy&& move) noexcept;
+
+	~proxy();
 
 	proxy&
 	operator=(const proxy& copy);
@@ -48,17 +45,17 @@ struct proxy
 	send_batch(const std::vector<std::variant<notification, request>>& batch);
 
 private:
-	concurrent_queue<
-		std::variant<
-			notification,
-			request,
-			std::vector<std::variant<
-				notification,
-				request>>>>
-		message_queue;
+	fluent_curl::session _session;
+	fluent_curl::handle _handle;
 
-	void
-	process_queue();
+	curl_slist* _headers;
+
+	static std::size_t
+	write_cb(
+		char* data,
+		size_t member_size,
+		size_t member_quantity,
+		void* userdata);
 };
 }
 #endif

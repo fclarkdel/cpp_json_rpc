@@ -4,28 +4,31 @@ namespace cpp_json_rpc
 {
 proxy::proxy(std::string url):
 	url(std::move(url)),
-	base_request(curl_easy_init())
+	_headers(curl_slist_append(nullptr, "Content-Type: application/json"))
 {
-}
-proxy::proxy(std::string url, CURL* base_request):
-	url(std::move(url)),
-	base_request(curl_easy_duphandle(base_request))
-{
-}
-proxy::proxy():
-	base_request(curl_easy_init())
-{
+	_handle
+		.option<CURLOPT_URL>(this->url.c_str())
+		.option<CURLOPT_HTTPHEADER>(_headers);
 }
 proxy::proxy(const proxy& copy):
 	url(copy.url),
-	base_request(curl_easy_duphandle(copy.base_request))
+	_headers(curl_slist_append(nullptr, "Content-Type: application/json")),
+	_handle(copy._handle)
 {
 }
 proxy::proxy(proxy&& move) noexcept:
 	url(std::move(move.url)),
-	base_request(move.base_request)
+	_headers(move._headers),
+	_handle(std::move(move._handle))
 {
-	move.base_request = curl_easy_init();
+	// Necessary such that when the destructor of
+	// the moved from proxy is called, it will not free
+	// its _headers, which is now being used by this.
+	move._headers = nullptr;
+}
+proxy::~proxy()
+{
+	curl_slist_free_all(_headers);
 }
 proxy&
 proxy::operator=(const proxy& copy)
@@ -34,7 +37,10 @@ proxy::operator=(const proxy& copy)
 		return *this;
 
 	url = copy.url;
-	base_request = curl_easy_duphandle(copy.base_request);
+
+	_headers = curl_slist_append(nullptr, "Content-Type: application/json");
+
+	_handle = copy._handle;
 
 	return *this;
 }
@@ -46,8 +52,14 @@ proxy::operator=(proxy&& move) noexcept
 
 	url = std::move(move.url);
 
-	base_request = move.base_request;
-	move.base_request = curl_easy_init();
+	_headers = move._headers;
+
+	_handle = std::move(move._handle);
+
+	// Necessary such that when the destructor of
+	// the moved from proxy is called, it will not free
+	// its _headers which is now being used.
+	move._headers = nullptr;
 
 	return *this;
 }
@@ -59,19 +71,33 @@ proxy::operator==(const proxy& rhs) const
 void
 proxy::send_notification(const notification& notification)
 {
-	message_queue.push(notification);
+	fluent_curl::handle handle = _handle;
+
+
 }
 std::future<response>
 proxy::send_request(const request& request)
 {
-	std::future<response> future_response;
-
-	message_queue.push(request);
-
-	return future_response;
+	return {};
 }
-void
-proxy::process_queue()
+std::variant<response, std::vector<response>>
+proxy::send_batch(const std::vector<std::variant<notification, request>>& batch)
 {
+	return {};
+}
+size_t
+proxy::write_cb(
+	char* data,
+	size_t member_size,
+	size_t member_quantity,
+	void* userdata)
+{
+	size_t total_size = member_size * member_quantity;
+
+	auto response = static_cast<std::string*>(userdata);
+
+	response->append(data, total_size);
+
+	return total_size;
 }
 }
