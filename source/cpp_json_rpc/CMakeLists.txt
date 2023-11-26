@@ -1,12 +1,11 @@
 add_library(
-    CppJsonRpc_Library
-    concurrent_queue.hpp
+    cpp_json_rpc_library
     error.cpp
     error.hpp
     notification.hpp
     notification.cpp
-    proxy.hpp
-    proxy.cpp
+    session.hpp
+    session.cpp
     response.hpp
     response.cpp
     request.hpp
@@ -14,7 +13,7 @@ add_library(
     shared_member_types.hpp
 )
 target_include_directories(
-    CppJsonRpc_Library
+    cpp_json_rpc_library
     PUBLIC
     ..
 )
@@ -29,17 +28,16 @@ FetchContent_MakeAvailable(
     fluent_curl
 )
 target_link_libraries(
-    CppJsonRpc_Library
+    cpp_json_rpc_library
     PUBLIC
     fluent_curl
 )
 if(PROJECT_IS_TOP_LEVEL)
     add_executable(
-        CppJsonRpc_Tests
-        concurrent_queue.test.cpp
+        cpp_json_rpc_tests
         error.test.cpp
         notification.test.cpp
-        proxy.test.cpp
+        session.test.cpp
         request.test.cpp
         response.test.cpp
     )
@@ -50,9 +48,9 @@ if(PROJECT_IS_TOP_LEVEL)
     FetchContent_MakeAvailable(googletest)
 
     target_link_libraries(
-        CppJsonRpc_Tests
+        cpp_json_rpc_tests
         PRIVATE
-        CppJsonRpc_Library
+        cpp_json_rpc_library
         gmock_main
     )
     enable_testing()

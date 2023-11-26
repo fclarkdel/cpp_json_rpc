@@ -7,7 +7,7 @@ namespace cpp_json_rpc
 {
 struct request
 {
-	Jsonrpc jsonrpc;
+	Jsonrpc jsonrpc = "2.0";
 	Method method;
 	Params params;
 	Id id;
@@ -29,6 +29,9 @@ struct request
 
 	bool
 	operator==(const request& rhs) const;
+
+	std::string
+	to_json() const;
 };
 }
 #endif

@@ -100,3 +100,40 @@ TEST(request, move_assignmnet)
 	EXPECT_EQ(copy, request());
 	EXPECT_EQ(original, move);
 }
+TEST(request, to_json)
+{
+	request req("method");
+
+	// {"jsonrpc":"2.0","method":"method","id":null}
+	std::string expected = "{\"jsonrpc\":\"2.0\",\"method\":\"method\",\"id\":null}";
+
+	EXPECT_EQ(expected, req.to_json());
+
+	req = request("method", "[0, 1, 2]");
+
+	// {"jsonrpc":"2.0","method":"method","id":null}
+	expected = "{\"jsonrpc\":\"2.0\",\"method\":\"method\",\"params\":[0, 1, 2],\"id\":null}";
+
+	EXPECT_EQ(expected, req.to_json());
+
+	req = request("method", "[0, 1, 2]", 0);
+
+	// {"jsonrpc":"2.0","method":"method","id":0}
+	expected = "{\"jsonrpc\":\"2.0\",\"method\":\"method\",\"params\":[0, 1, 2],\"id\":0}";
+
+	EXPECT_EQ(expected, req.to_json());
+
+	req = request("method", "[0, 1, 2]", 0.52346);
+
+	// {"jsonrpc":"2.0","method":"method","id":0.52346}
+	expected = "{\"jsonrpc\":\"2.0\",\"method\":\"method\",\"params\":[0, 1, 2],\"id\":0.52346}";
+
+	EXPECT_EQ(expected, req.to_json());
+
+	req = request("method", "[0, 1, 2]", "0");
+
+	// {"jsonrpc":"2.0","method":"method","id":"0"}
+	expected = "{\"jsonrpc\":\"2.0\",\"method\":\"method\",\"params\":[0, 1, 2],\"id\":\"0\"}";
+
+	EXPECT_EQ(expected, req.to_json());
+}

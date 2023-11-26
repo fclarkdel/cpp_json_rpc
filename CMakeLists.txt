@@ -7,11 +7,11 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(source/cpp_json_rpc)
 
 add_library(
-    CppJsonRpc
+    cpp_json_rpc
     INTERFACE
 )
 target_link_libraries(
-    CppJsonRpc
+    cpp_json_rpc
     INTERFACE
-    CppJsonRpc_Library
+    cpp_json_rpc_library
 )

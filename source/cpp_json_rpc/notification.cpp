@@ -43,4 +43,28 @@ notification::operator=(notification&& move) noexcept
 
 	return *this;
 }
+std::string
+notification::to_json() const
+{
+	// {"jsonrpc":"2.0",
+	std::string json = "{\"jsonrpc\":\"";
+	json += jsonrpc;
+	json += "\",";
+
+	// {"jsonrpc":"2.0","method":"<method>"
+	json += "\"method\":\"";
+	json += method;
+	json += "\"";
+
+	if(params)
+	{
+		// {"jsonrpc":"2.0","method":"<method>","params":<params>
+		json += ",\"params\":";
+		json += params.value();
+	}
+	// {"jsonrpc":"2.0","method":"<method>"...}
+	json += "}";
+
+	return json;
+}
 }

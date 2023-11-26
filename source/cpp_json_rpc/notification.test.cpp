@@ -74,3 +74,19 @@ TEST(notification, move_assignmnet)
 	EXPECT_EQ(copy, notification());
 	EXPECT_EQ(original, move);
 }
+TEST(notification, to_json)
+{
+	notification notify("method");
+
+	// {"jsonrpc":"2.0","method":"method"}
+	std::string expected = "{\"jsonrpc\":\"2.0\",\"method\":\"method\"}";
+
+	EXPECT_EQ(expected, notify.to_json());
+
+	notify = notification("method", "[0, 1, 2]");
+
+	// {"jsonrpc":"2.0","method":"method","params":[0, 1, 2]}
+	expected = 	"{\"jsonrpc\":\"2.0\",\"method\":\"method\",\"params\":[0, 1, 2]}";
+
+	EXPECT_EQ(expected, notify.to_json());
+}

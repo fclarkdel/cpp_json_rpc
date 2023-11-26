@@ -27,6 +27,9 @@ struct notification
 
 	bool
 	operator==(const notification& rhs) const;
+
+	std::string
+	to_json() const;
 };
 }
 #endif
